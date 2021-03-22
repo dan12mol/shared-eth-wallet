@@ -1,17 +1,8 @@
-pragma solidity ^0.5.13;
+pragma solidity ^0.8.0;
 
-contract SimpleWallet {
-    address public owner;
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/access/Ownable.sol";
 
-    constructor() public {
-        owner = msg.sender;
-    }
-
-    modifier onlyOwner() {
-        require(owner == msg.sender, "You are not allowed");
-        _;
-    }
-
+contract SimpleWallet is Ownable {
     function withdrawMoney(address payable _to, uint256 _amount)
         public
         onlyOwner
@@ -19,5 +10,7 @@ contract SimpleWallet {
         _to.transfer(_amount);
     }
 
-    function() external payable {}
+    receive() external payable {}
+
+    fallback() external {}
 }
